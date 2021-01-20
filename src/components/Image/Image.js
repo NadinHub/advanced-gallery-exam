@@ -31,8 +31,13 @@ class Image extends React.Component {
     });
   }
 
+  handleResize = () => {
+    this.calcImageSize();
+  };
+
   componentDidMount() {
     this.calcImageSize();
+    window.addEventListener("resize", this.handleResize);
   }
 
   urlFromDto(dto) {
