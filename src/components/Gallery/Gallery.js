@@ -56,10 +56,6 @@ class Gallery extends React.Component {
     window.addEventListener("resize", this.handleResize);
   }
 
-  // componentWillUnmount() {
-  //   window.removeEventListener("resize", this.handleResize);
-  // }
-
   componentWillReceiveProps(props) {
     this.getImages(props.tag);
   }
