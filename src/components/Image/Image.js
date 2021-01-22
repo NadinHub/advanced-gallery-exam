@@ -18,6 +18,7 @@ class Image extends React.Component {
       display: "",
       scale1: 1,
       zindex: 1,
+      opacityGray: 1,
     };
   }
 
@@ -31,6 +32,7 @@ class Image extends React.Component {
     });
   }
 
+  // For resizing we need to calculate an image size, for that there is a function calcImageSize
   handleResize = () => {
     this.calcImageSize();
   };
@@ -45,7 +47,6 @@ class Image extends React.Component {
   }
 
   rotateImg = () => {
-    console.log("rotate");
     let newRotation = this.state.rotation + 90;
     if (newRotation >= 360) {
       newRotation = -360;
@@ -57,54 +58,66 @@ class Image extends React.Component {
 
   // function for "deleting" image ---
   deleteImg = () => {
-    console.log("deleted");
-    this.setState({ display: `none` });
+    this.setState({ display: "none" });
   };
 
   scaleImg = () => {
-    console.log("scale");
-    this.setState({ scale1: 2, zindex: 1000 });
+    this.setState({ scale1: 2, zindex: 1000, opacityGray: 0 });
   };
 
   unscaleImg = () => {
-    this.setState({ scale1: 1, zindex: 2 });
+    this.setState({ scale1: 1, zindex: 1, opacityGray: 1 });
   };
 
   render() {
-    const { rotation, display, scale1, zindex } = this.state;
+    const { size, rotation, display, scale1, zindex, opacityGray } = this.state;
     return (
       <div
-        onMouseOut={this.unscaleImg}
         className="image-root"
         style={{
-          backgroundImage: `url(${this.urlFromDto(this.props.dto)})`,
-          width: this.state.size + "px",
-          height: this.state.size + "px",
-          transform: `rotate(${rotation}deg) scale(${scale1})`,
-          display: `${display}`,
-          zIndex: `${zindex}`,
+          width: size + "px",
+          height: size + "px",
+          display: display,
+          zIndex: zindex,
         }}
       >
-        <div>
-          <FontAwesome
-            onClick={this.rotateImg}
-            className="image-icon"
-            name="sync-alt"
-            title="rotate"
-          />
-          <FontAwesome
-            onClick={this.deleteImg}
-            // style={{ opacity: `${opacity}` }}
-            className="image-icon"
-            name="trash-alt"
-            title="delete"
-          />
-          <FontAwesome
-            onClick={this.scaleImg}
-            className="image-icon"
-            name="expand"
-            title="expand"
-          />
+        <img
+          src={this.urlFromDto(this.props.dto)}
+          onMouseOut={this.unscaleImg}
+          style={{
+            width: "100%",
+            height: "100%",
+            transform: `rotate(${rotation}deg) scale(${scale1})`,
+            display: `${display}`,
+            zIndex: `${zindex}`,
+          }}
+        />
+        <div
+          className="gray-cover"
+          style={{
+            opacity: opacityGray,
+          }}
+        >
+          <div>
+            <FontAwesome
+              onClick={this.rotateImg}
+              className="image-icon"
+              name="sync-alt"
+              title="rotate"
+            />
+            <FontAwesome
+              onClick={this.deleteImg}
+              className="image-icon"
+              name="trash-alt"
+              title="delete"
+            />
+            <FontAwesome
+              onClick={this.scaleImg}
+              className="image-icon"
+              name="expand"
+              title="expand"
+            />
+          </div>
         </div>
       </div>
     );
