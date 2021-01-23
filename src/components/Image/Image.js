@@ -1,25 +1,29 @@
-import React from "react";
-import PropTypes from "prop-types";
-import FontAwesome from "react-fontawesome";
-import "./Image.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import FontAwesome from 'react-fontawesome';
+import './Image.scss';
 
 class Image extends React.Component {
   static propTypes = {
-    dto: PropTypes.object,
-    galleryWidth: PropTypes.number,
+    image: PropTypes.object,
+    galleryWidth: PropTypes.number
+    // key: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
+    // const {image, galleryWidth, key } = this.props.
+
     this.calcImageSize = this.calcImageSize.bind(this);
     this.state = {
       size: 200,
-      rotation: `0`,
-      display: "",
+      rotation: '0',
+      display: '',
       scale1: 1,
       zindex: 1,
-      opacityGray: 1,
+      opacityGray: 1
     };
+    console.log(props.image);
   }
 
   calcImageSize() {
@@ -28,7 +32,7 @@ class Image extends React.Component {
     const imagesPerRow = Math.round(galleryWidth / targetSize);
     const size = galleryWidth / imagesPerRow;
     this.setState({
-      size,
+      size
     });
   }
 
@@ -39,11 +43,12 @@ class Image extends React.Component {
 
   componentDidMount() {
     this.calcImageSize();
-    window.addEventListener("resize", this.handleResize);
+    window.addEventListener('resize', this.handleResize);
   }
 
-  urlFromDto(dto) {
-    return `https://farm${dto.farm}.staticflickr.com/${dto.server}/${dto.id}_${dto.secret}.jpg`;
+  urlFromimage() {
+    const {image}=this.props
+    return `https://farm${image.farm}.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg`;
   }
 
   rotateImg = () => {
@@ -52,13 +57,13 @@ class Image extends React.Component {
       newRotation = -360;
     }
     this.setState({
-      rotation: newRotation,
+      rotation: newRotation
     });
   };
 
   // function for "deleting" image ---
   deleteImg = () => {
-    this.setState({ display: "none" });
+    this.setState({ display: 'none' });
   };
 
   scaleImg = () => {
@@ -71,31 +76,34 @@ class Image extends React.Component {
 
   render() {
     const { size, rotation, display, scale1, zindex, opacityGray } = this.state;
+    const { image } = this.props;
     return (
       <div
-        className="image-root"
+        className='image-root'
         style={{
-          width: size + "px",
-          height: size + "px",
+          width: size + 'px',
+          height: size + 'px',
           display: display,
-          zIndex: zindex,
+          zIndex: zindex
         }}
+      // key={key1}
       >
         <img
-          src={this.urlFromDto(this.props.dto)}
+          src={this.urlFromimage(image)}
           onMouseOut={this.unscaleImg}
           style={{
-            width: "100%",
-            height: "100%",
+            width: '100%',
+            height: '100%',
             transform: `rotate(${rotation}deg) scale(${scale1})`,
             display: `${display}`,
-            zIndex: `${zindex}`,
+            zIndex: `${zindex}`
           }}
+          alt=''
         />
         <div
-          className="gray-cover"
+          className='gray-cover'
           style={{
-            opacity: opacityGray,
+            opacity: opacityGray
           }}
         >
           <div>

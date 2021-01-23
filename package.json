@@ -89,5 +89,6 @@
       "clean-source"
     ],
     "noprompt": false
-  }
+  },
+  "proxy": "http://localhost:8000"
 }
