@@ -25,9 +25,9 @@ class Image extends React.Component {
     const { galleryWidth } = this.props; // width come from props from Gallery comp
     const targetSize = 200;
     const imagesPerRow = Math.round(galleryWidth / targetSize);
-    const sizeDinamyc = galleryWidth / imagesPerRow;
+    const size = galleryWidth / imagesPerRow;
     this.setState({
-      size: sizeDinamyc
+      size
     });
   }
 
