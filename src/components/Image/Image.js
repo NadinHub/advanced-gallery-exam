@@ -11,7 +11,6 @@ class Image extends React.Component {
 
   constructor(props) {
     super(props);
-    // this.calcImageSize = this.calcImageSize.bind(this);
     this.state = {
       size: 200,
       rotation: '0',
@@ -76,26 +75,9 @@ class Image extends React.Component {
     this.setState({ scale1: 1, zindex: 1, opacityGray: 1 });
   };
 
-  // Drag and Drop features ---
-  onDragStart = (e) => {
-    const target = e.target;
-
-    e.dataTransfer.setData('imageId', target.id);
-
-    // Make image to dissapear when start draging
-    setTimeout(() => {
-      target.style.display = 'none';
-    }, 100)
-  }
-
-  onDragOver = (e) => {
-    e.stopPropagation();
-  }
-
   render() {
     const { size, rotation, display, scale1, zindex, opacityGray } = this.state;
-    const { image, children, id, draggable } = this.props;
-    // console.log(image)
+    const { image, onDrop, onDragStart, draggable = false } = this.props;
     return (
       <div
         className='image-root'
@@ -105,10 +87,10 @@ class Image extends React.Component {
           display: display,
           zIndex: zindex
         }}
-        id={id}
-        draggable='true'
-        onDragStart={this.onDragStart}
-        onDragOver={this.onDragOver}
+        onDrop={onDrop}
+        onDragStart={onDragStart}
+        draggable={draggable}
+
       >
         <img
           src={this.urlFromImage(image)}
@@ -149,7 +131,6 @@ class Image extends React.Component {
             />
           </div>
         </div>
-        {children}
       </div>
     );
   }

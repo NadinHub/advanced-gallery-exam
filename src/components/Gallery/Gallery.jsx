@@ -17,14 +17,11 @@ class Gallery extends React.Component {
       count: 30,
       pageNumber: 1,
       galleryWidth: this.getGalleryWidth()
-      // height: window.innerHeight,
-      // width: window.innerWidth,
     };
   }
 
   getGalleryWidth() {
     try {
-      // console.log(`Gallery - getGalleryWidth ${document.body.clientWidth}`)
       return document.body.clientWidth;
     } catch (e) {
       return 1000;
@@ -46,10 +43,6 @@ class Gallery extends React.Component {
           this.setState((prevState) => {
             return { images: [...prevState.images, ...res.photos.photo] }
           });
-          // this.setState({ images: this.state.images.concat(res.photos.photo) });
-          // this.setState(() => {
-          //   return { images: [...this.state.images, ...res.photos.photo] }
-          // });
         }
       })
       .then(() => {
@@ -85,20 +78,28 @@ class Gallery extends React.Component {
     );
   };
 
-  drop = e => {
-    e.preventDefault();
-    const imageId = e.dataTransfer.getData('imageId');
-
-    const imageDrag = document.getElementById(imageId);
-    imageDrag.style.display = 'block';
-
-    e.target.appendChild(imageDrag);
-    // const dragZone = document.getElementById('dragZone');
-    // dragZone.appendChild(imageDrag)
-  }
-
   dragOver = e => {
     e.preventDefault()
+  }
+
+  reorderImageList = (list, startIndex, endIndex) => {
+    const result = [...list]
+    const [removedItem] = result.splice(startIndex, 1)
+    result.splice(endIndex, 0, removedItem)
+
+    this.setState({
+      images: result
+    })
+  }
+
+  drop = (event, index) => {
+    event.preventDefault()
+    const dropped = event.dataTransfer.getData('text')
+    this.reorderImageList(this.state.images, dropped, index)
+  }
+
+  onDragStart(e, index) {
+    e.dataTransfer.setData('text/plain', index)
   }
 
   render() {
@@ -113,25 +114,21 @@ class Gallery extends React.Component {
             <b>Yay! You have seen it all</b>
           </p>
         }
-      // id="gallery-1"
       >
         <div className="gallery-root"
-          id='dragZone'
           onDragOver={this.dragOver}
-          onDrop={this.drop}
         >
           {this.state.images.map((image, index) =>
           (<Image
             key={`image-${image.id}-title-${image.title}-index-${index}`}
             image={image}
             galleryWidth={this.state.galleryWidth}
-            id={image.id}
             draggable='true'
-            className='imageClassName'
+            onDrop={(e) => this.drop(e, index)}
+            onDragStart={(e) => this.onDragStart(e, index)}
           />)
           )
           }
-          {this.props.children}
         </div>
       </InfiniteScroll>
     );
