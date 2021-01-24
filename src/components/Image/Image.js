@@ -23,12 +23,12 @@ class Image extends React.Component {
   }
 
   calcImageSize() {
-    const { galleryWidth } = this.props;
+    const { galleryWidth } = this.props; // width come from props from Gallery comp
     const targetSize = 200;
     const imagesPerRow = Math.round(galleryWidth / targetSize);
-    const size = galleryWidth / imagesPerRow;
+    const sizeDinamyc = galleryWidth / imagesPerRow;
     this.setState({
-      size
+      size: sizeDinamyc
     });
   }
 
@@ -38,8 +38,15 @@ class Image extends React.Component {
   };
 
   componentDidMount() {
+    this.calcImageSize();
     this.handleResize();
     window.addEventListener('resize', this.handleResize);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.galleryWidth !== this.props.galleryWidth) {
+      this.calcImageSize()
+    }
   }
 
   urlFromImage() {

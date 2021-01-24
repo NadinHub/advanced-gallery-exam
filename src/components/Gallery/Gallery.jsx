@@ -24,6 +24,7 @@ class Gallery extends React.Component {
 
   getGalleryWidth() {
     try {
+      // console.log(`Gallery - getGalleryWidth ${document.body.clientWidth}`)
       return document.body.clientWidth;
     } catch (e) {
       return 1000;
@@ -41,12 +42,7 @@ class Gallery extends React.Component {
     })
       .then((res) => res.data)
       .then((res) => {
-        if (
-          res &&
-          res.photos &&
-          res.photos.photo &&
-          res.photos.photo.length > 0
-        ) {
+        if (res && res.photos && res.photos.photo && res.photos.photo.length > 0) {
           this.setState((prevState) => {
             return { images: [...prevState.images, ...res.photos.photo] }
           });
@@ -55,7 +51,10 @@ class Gallery extends React.Component {
           //   return { images: [...this.state.images, ...res.photos.photo] }
           // });
         }
-      });
+      })
+      .then(() => {
+        this.handleResizeGallery()
+      })
   }
 
   handleResizeGallery = () => {
@@ -69,6 +68,7 @@ class Gallery extends React.Component {
     this.setState({
       galleryWidth: document.body.clientWidth
     });
+    this.handleResizeGallery();
     window.addEventListener('resize', this.handleResizeGallery);
   }
 
