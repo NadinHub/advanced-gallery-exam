@@ -4,6 +4,7 @@ import axios from 'axios';
 import Image from '../Image';
 import './Gallery.scss';
 import InfiniteScroll from 'react-infinite-scroll-component';
+
 class Gallery extends React.Component {
   static propTypes = {
     tag: PropTypes.string
@@ -15,7 +16,7 @@ class Gallery extends React.Component {
       images: [],
       count: 30,
       pageNumber: 1,
-      galleryWidth: this.getGalleryWidth()
+      galleryWidth: this.getGalleryWidth() //890px
       // height: window.innerHeight,
       // width: window.innerWidth,
     };
@@ -23,8 +24,6 @@ class Gallery extends React.Component {
   }
 
   getGalleryWidth() {
-    // console.log(document.body.clientWidth);
-    // console.log(window.innerWidth)
     try {
       return document.body.clientWidth;
     } catch (e) {
@@ -49,51 +48,45 @@ class Gallery extends React.Component {
           res.photos.photo &&
           res.photos.photo.length > 0
         ) {
-          this.setState({ images: res.photos.photo });
+          this.setState((prevState) => {
+            return { images: [...prevState.images, ...res.photos.photo] }
+          });
+          // this.setState({ images: this.state.images.concat(res.photos.photo) });
           // this.setState(() => {
           //   return { images: [...this.state.images, ...res.photos.photo] }
           // });
           // console.log(res.photos.photo[1].id)
           // return res.photos;
         }
-        // console.log(res.photos);
       });
   }
 
+  handleResizeGallery = () => {
+    this.setState({
+      galleryWidth: this.getGalleryWidth()
+    });
+  };
+  
   componentDidMount() {
     this.getImages(this.props.tag);
     this.setState({
       galleryWidth: document.body.clientWidth
     });
-    window.addEventListener('resize', this.handleResize);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.setState({
-      galleryWidth: document.body.clientWidth
-    }));
+    window.addEventListener('resize', this.handleResizeGallery);
   }
 
   componentWillReceiveProps(props) {
-    this.setState({ pageNumber: 1, images: [] }, () => {
-      this.getImages(props.tag);
-    })
+    this.getImages(props.tag);
   }
 
-  handleResize = () => {
-    // console.log("handleResize");
-    this.setState({
-      galleryWidth: this.getGalleryWidth()
-    });
-  };
+  // componentWillUnmount() {
+  //   window.removeEventListener('resize', this.setState({
+  //     galleryWidth: document.body.clientWidth
+  //   }));
+  // }
 
-  // setNext = () => {
-  //   console.log("setNext");
-  //   this.setState({ pageNumber: this.state.pageNumber + 1 });
-  //   this.getImages(this.props.tag)
-  // };
+
   fetchImages = () => {
-    console.log('setNext');
     this.setState(
       (state) => {
         return { pageNumber: state.pageNumber + 1 };
@@ -103,12 +96,10 @@ class Gallery extends React.Component {
   };
 
   render() {
-    console.log(this.state)
     return (
       <InfiniteScroll
         dataLength={this.state.images.length}
         next={() => this.fetchImages(this.props.tag)}
-        // next={()=> this.setNext}
         hasMore={true}
         loader={<h4> Loading ... </h4>}
         endMessage={
@@ -116,21 +107,14 @@ class Gallery extends React.Component {
             <b>Yay! You have seen it all</b>
           </p>
         }
-      // className="gallery-root"
       >
         <div className="gallery-root">
-          {this.state.images.map((image) =>
-          //  {
-          //   // console.log(image);
-          //   return 
-          (
-            <Image
-              key={`image-${image.id}-title-${image.title}`}
-              image={image}
-              galleryWidth={this.state.galleryWidth}
-            />
-          )
-            // }
+          {this.state.images.map((image, index) =>
+          (<Image
+            key={`image-${image.id}-title-${image.title}-index-${index}`}
+            image={image}
+            galleryWidth={this.state.galleryWidth}
+          />)
           )
           }
         </div>

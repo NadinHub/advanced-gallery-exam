@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.scss';
-import Gallery from '../Gallery';
+import Gallery from '../Gallery/Gallery.jsx';
 
 class App extends React.Component {
   static propTypes = {
