@@ -11,7 +11,7 @@ class Image extends React.Component {
 
   constructor(props) {
     super(props);
-    this.calcImageSize = this.calcImageSize.bind(this);
+    // this.calcImageSize = this.calcImageSize.bind(this);
     this.state = {
       size: 200,
       rotation: '0',
@@ -22,7 +22,7 @@ class Image extends React.Component {
     };
   }
 
-  calcImageSize() {
+  calcImageSize = () => {
     const { galleryWidth } = this.props; // width come from props from Gallery comp
     const targetSize = 200;
     const imagesPerRow = Math.round(galleryWidth / targetSize);
@@ -77,9 +77,25 @@ class Image extends React.Component {
     this.setState({ scale1: 1, zindex: 1, opacityGray: 1 });
   };
 
+  // Drag and Drop features ---
+  onDragStart = (e) => {
+    const target = e.target;
+
+    e.dataTransfer.setData('image_id', target.id);
+
+    // make image dissapear when start draging
+    setTimeout(() => {
+      target.style.display = 'none';
+    }, 0)
+  }
+
+  onDragOver = (e) => {
+    e.stopPropagation();
+  }
+
   render() {
     const { size, rotation, display, scale1, zindex, opacityGray } = this.state;
-    const { image } = this.props;
+    const { image, children, id, draggable } = this.props;
     return (
       <div
         className='image-root'
@@ -89,6 +105,10 @@ class Image extends React.Component {
           display: display,
           zIndex: zindex
         }}
+        id={id}
+        draggable={draggable}
+        onDragStart={this.onDragStart}
+        onDragOver={this.onDragOver}
       >
         <img
           src={this.urlFromImage(image)}
@@ -129,6 +149,7 @@ class Image extends React.Component {
             />
           </div>
         </div>
+        {children}
       </div>
     );
   }

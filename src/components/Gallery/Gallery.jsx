@@ -85,6 +85,20 @@ class Gallery extends React.Component {
     );
   };
 
+  drop = e => {
+    e.preventDefault();
+    const imageId = e.dataTransfer.getData('imageId');
+
+    const image = document.getElementById(imageId);
+    image.style.display = 'block';
+
+    e.target.appendChild(image);
+  }
+
+  dragOver = e => {
+    e.preventDefault()
+  }
+
   render() {
     return (
       <InfiniteScroll
@@ -97,16 +111,22 @@ class Gallery extends React.Component {
             <b>Yay! You have seen it all</b>
           </p>
         }
+        id="gallery-1"
       >
-        <div className="gallery-root">
+        <div className="gallery-root" >
           {this.state.images.map((image, index) =>
           (<Image
             key={`image-${image.id}-title-${image.title}-index-${index}`}
             image={image}
             galleryWidth={this.state.galleryWidth}
+            // id={this.props.id} onDrop={this.drop} onDragOver={this.dragOver}
+            id='image-1'
+            draggable='true'
+            className='image'
           />)
           )
           }
+          {this.props.children}
         </div>
       </InfiniteScroll>
     );
