@@ -89,10 +89,12 @@ class Gallery extends React.Component {
     e.preventDefault();
     const imageId = e.dataTransfer.getData('imageId');
 
-    const image = document.getElementById(imageId);
-    image.style.display = 'block';
+    const imageDrag = document.getElementById(imageId);
+    imageDrag.style.display = 'block';
 
-    e.target.appendChild(image);
+    e.target.appendChild(imageDrag);
+    // const dragZone = document.getElementById('dragZone');
+    // dragZone.appendChild(imageDrag)
   }
 
   dragOver = e => {
@@ -111,18 +113,21 @@ class Gallery extends React.Component {
             <b>Yay! You have seen it all</b>
           </p>
         }
-        id="gallery-1"
+      // id="gallery-1"
       >
-        <div className="gallery-root" >
+        <div className="gallery-root"
+          id='dragZone'
+          onDragOver={this.dragOver}
+          onDrop={this.drop}
+        >
           {this.state.images.map((image, index) =>
           (<Image
             key={`image-${image.id}-title-${image.title}-index-${index}`}
             image={image}
             galleryWidth={this.state.galleryWidth}
-            // id={this.props.id} onDrop={this.drop} onDragOver={this.dragOver}
-            id='image-1'
+            id={image.id}
             draggable='true'
-            className='image'
+            className='imageClassName'
           />)
           )
           }

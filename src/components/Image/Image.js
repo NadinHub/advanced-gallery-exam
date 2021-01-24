@@ -39,7 +39,6 @@ class Image extends React.Component {
 
   componentDidMount() {
     this.calcImageSize();
-    this.handleResize();
     window.addEventListener('resize', this.handleResize);
   }
 
@@ -81,12 +80,12 @@ class Image extends React.Component {
   onDragStart = (e) => {
     const target = e.target;
 
-    e.dataTransfer.setData('image_id', target.id);
+    e.dataTransfer.setData('imageId', target.id);
 
-    // make image dissapear when start draging
+    // Make image to dissapear when start draging
     setTimeout(() => {
       target.style.display = 'none';
-    }, 0)
+    }, 100)
   }
 
   onDragOver = (e) => {
@@ -96,6 +95,7 @@ class Image extends React.Component {
   render() {
     const { size, rotation, display, scale1, zindex, opacityGray } = this.state;
     const { image, children, id, draggable } = this.props;
+    // console.log(image)
     return (
       <div
         className='image-root'
@@ -106,7 +106,7 @@ class Image extends React.Component {
           zIndex: zindex
         }}
         id={id}
-        draggable={draggable}
+        draggable='true'
         onDragStart={this.onDragStart}
         onDragOver={this.onDragOver}
       >
