@@ -16,11 +16,10 @@ class Gallery extends React.Component {
       images: [],
       count: 30,
       pageNumber: 1,
-      galleryWidth: this.getGalleryWidth() //890px
+      galleryWidth: this.getGalleryWidth()
       // height: window.innerHeight,
       // width: window.innerWidth,
     };
-    // console.log(props);
   }
 
   getGalleryWidth() {
@@ -55,8 +54,6 @@ class Gallery extends React.Component {
           // this.setState(() => {
           //   return { images: [...this.state.images, ...res.photos.photo] }
           // });
-          // console.log(res.photos.photo[1].id)
-          // return res.photos;
         }
       });
   }
@@ -66,7 +63,7 @@ class Gallery extends React.Component {
       galleryWidth: this.getGalleryWidth()
     });
   };
-  
+
   componentDidMount() {
     this.getImages(this.props.tag);
     this.setState({
@@ -78,13 +75,6 @@ class Gallery extends React.Component {
   componentWillReceiveProps(props) {
     this.getImages(props.tag);
   }
-
-  // componentWillUnmount() {
-  //   window.removeEventListener('resize', this.setState({
-  //     galleryWidth: document.body.clientWidth
-  //   }));
-  // }
-
 
   fetchImages = () => {
     this.setState(

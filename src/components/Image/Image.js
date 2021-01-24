@@ -7,12 +7,10 @@ class Image extends React.Component {
   static propTypes = {
     image: PropTypes.object,
     galleryWidth: PropTypes.number
-    // key: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
-    // const {image, galleryWidth, key } = this.props.
     this.calcImageSize = this.calcImageSize.bind(this);
     this.state = {
       size: 200,
@@ -22,7 +20,6 @@ class Image extends React.Component {
       zindex: 1,
       opacityGray: 1
     };
-    // console.log(props.image);
   }
 
   calcImageSize() {
@@ -41,13 +38,12 @@ class Image extends React.Component {
   };
 
   componentDidMount() {
-    // this.calcImageSize();
     this.handleResize();
     window.addEventListener('resize', this.handleResize);
   }
 
   urlFromImage() {
-    const {image}=this.props
+    const { image } = this.props
     return `https://farm${image.farm}.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg`;
   }
 
@@ -86,7 +82,6 @@ class Image extends React.Component {
           display: display,
           zIndex: zindex
         }}
-      // key={key1}
       >
         <img
           src={this.urlFromImage(image)}
