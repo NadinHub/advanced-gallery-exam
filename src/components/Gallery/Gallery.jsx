@@ -65,10 +65,6 @@ class Gallery extends React.Component {
     window.addEventListener('resize', this.handleResizeGallery);
   }
 
-  componentWillReceiveProps(props) {
-    this.getImages(props.tag);
-  }
-
   fetchImages = () => {
     this.setState(
       (state) => {
@@ -108,7 +104,7 @@ class Gallery extends React.Component {
         dataLength={this.state.images.length}
         next={() => this.fetchImages(this.props.tag)}
         hasMore={true}
-        loader={<h4> Loading ... </h4>}
+        loader={<h4 style={{ textAlign: 'center' }}> Loading ... </h4>}
         endMessage={
           <p style={{ textAlign: 'center' }}>
             <b>Yay! You have seen it all</b>

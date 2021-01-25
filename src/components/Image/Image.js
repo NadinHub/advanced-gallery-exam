@@ -13,6 +13,7 @@ class Image extends React.Component {
     super(props);
     this.state = {
       size: 200,
+      percentSize: 1,
       rotation: '0',
       display: '',
       scale1: 1,
@@ -27,18 +28,13 @@ class Image extends React.Component {
     const imagesPerRow = Math.round(galleryWidth / targetSize);
     const size = galleryWidth / imagesPerRow;
     this.setState({
-      size
+      size,
+      percentSize: imagesPerRow
     });
   }
 
-  // For resizing we need to calculate an image size, for that there is a function calcImageSize
-  handleResize = () => {
-    this.calcImageSize();
-  };
-
   componentDidMount() {
     this.calcImageSize();
-    window.addEventListener('resize', this.handleResize);
   }
 
   componentDidUpdate(prevProps) {
@@ -75,14 +71,18 @@ class Image extends React.Component {
     this.setState({ scale1: 1, zindex: 1, opacityGray: 1 });
   };
 
+  addFavorite = () => {
+    console.log('Favorite added');
+  }
+
   render() {
-    const { size, rotation, display, scale1, zindex, opacityGray } = this.state;
+    const { size, rotation, display, scale1, zindex, opacityGray, percentSize } = this.state;
     const { image, onDrop, onDragStart, draggable = false } = this.props;
     return (
       <div
         className='image-root'
         style={{
-          width: size + 'px',
+          width: `calc(100% / ${percentSize})`,
           height: size + 'px',
           display: display,
           zIndex: zindex
@@ -90,7 +90,6 @@ class Image extends React.Component {
         onDrop={onDrop}
         onDragStart={onDragStart}
         draggable={draggable}
-
       >
         <img
           src={this.urlFromImage(image)}
@@ -128,6 +127,12 @@ class Image extends React.Component {
               className="image-icon"
               name="expand"
               title="expand"
+            />
+            <FontAwesome
+              onClick={this.addFavorite}
+              className="image-icon"
+              name="heart"
+              title="heart"
             />
           </div>
         </div>
