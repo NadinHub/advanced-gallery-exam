@@ -18,7 +18,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Router>
+      <Router basename='/flickr-gallery'>
         <div>
           <Header />
           <div className="app-root">
@@ -28,9 +28,6 @@ class App extends React.Component {
                 onChange={event => this.setState({ tag: event.target.value })} value={this.state.tag} />
             </div>
           </div>
-          {/* <h1> HHHHHH </h1> */}
-          {/* <Route path="/"> */}
-          {/* <Gallery tag={this.state.tag} /> */}
           <Switch>
             <Route exact path="/" component={() => <Gallery tag={this.state.tag} />} />
             <Route exact path="/favorite" component={FavoritePage} />
