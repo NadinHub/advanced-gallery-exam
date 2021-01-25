@@ -14,7 +14,7 @@ class Gallery extends React.Component {
     super(props);
     this.state = {
       images: [],
-      count: 30,
+      count: 90,
       pageNumber: 1,
       galleryWidth: this.getGalleryWidth()
     };
